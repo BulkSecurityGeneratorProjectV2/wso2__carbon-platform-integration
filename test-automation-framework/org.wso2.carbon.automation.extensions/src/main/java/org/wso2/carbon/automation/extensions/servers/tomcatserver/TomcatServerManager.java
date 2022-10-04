@@ -31,6 +31,7 @@ import org.wso2.carbon.automation.extensions.ExtensionUtils;
 import javax.servlet.ServletException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class TomcatServerManager {
     private final static Log log = LogFactory.getLog(TomcatServerManager.class);
@@ -120,13 +121,7 @@ public class TomcatServerManager {
     }
 
     private File createBaseDirectory(String basedirLocal) throws IOException {
-        final File base = File.createTempFile("jaxrs-tmp-", "", new File(basedirLocal));
-        if (!base.delete()) {
-            throw new IOException("Cannot (re)create base folder: " + base.getAbsolutePath());
-        }
-        if (!base.mkdir()) {
-            throw new IOException("Cannot create base folder: " + base.getAbsolutePath());
-        }
+        final File base = Files.createTempDirectory(new File(basedirLocal).toPath(), "jaxrs-tmp-").toFile();
         return base;
     }
 
